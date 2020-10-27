@@ -5,6 +5,7 @@ import sys
 server = 'XXXXXXXX'
 
 def connection():
+    # Setup initial connection to the server
     url = (server + '/icws/connection')
     body = {"__type":"urn:inin.com:connection:icAuthConnectionRequestSettings",
     "applicationName":"Create Email and add an attachment",
@@ -25,6 +26,7 @@ def connection():
 
 
 def createEmail():
+    # creates a new email interaction
     url = (server + "/icws/" + sessionID + "/interactions")
     body = {"emailContent":
             {"sender":
@@ -46,6 +48,7 @@ def createEmail():
     
 
 def getuploadUri():
+    #gets the URI for to HTTP upload the file
     url = (server + "/icws/" + sessionID + "/interactions/" + interactionID +"/email/attachments/file/upload")
     body = {
     "isInlineAttachment":"true",
@@ -62,6 +65,7 @@ def getuploadUri():
 
     
 def fileupload():
+    #Doing the actual HTTP upload
     url =(server + uploaduri)
     filename = ("test.txt")
     files = {'file': open(filename)}
@@ -73,6 +77,7 @@ def fileupload():
 
 
 def close():
+    #Delete the session on CIC
     url = (server + "/icws/" + sessionID + "/connection")
     connection = requests.delete(url, headers = {"ININ-ICWS-CSRF-Token" : token}, cookies = cookie)
     if connection.status_code >= 200 and connection.status_code <= 299:
