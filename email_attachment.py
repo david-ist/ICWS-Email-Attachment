@@ -4,7 +4,7 @@ import sys
 
 server = 'XXXXXXXX'
 
-def connection(server):
+def connection():
     url = (server + '/icws/connection')
     body = {"__type":"urn:inin.com:connection:icAuthConnectionRequestSettings",
     "applicationName":"Create Email and add an attachment",
@@ -22,9 +22,9 @@ def connection(server):
     else:
         print(connection.text)
         exit()
-connection(server)
 
-def createEmail(server):
+
+def createEmail():
     url = (server + "/icws/" + sessionID + "/interactions")
     body = {"emailContent":
             {"sender":
@@ -43,9 +43,9 @@ def createEmail(server):
     else:
         print(connection.text)
         exit()
-createEmail(server)    
+    
 
-def getuploadUri(server):
+def getuploadUri():
     url = (server + "/icws/" + sessionID + "/interactions/" + interactionID +"/email/attachments/file/upload")
     body = {
     "isInlineAttachment":"true",
@@ -59,9 +59,9 @@ def getuploadUri(server):
     else:
         print(connection.text)
         exit()
-getuploadUri(server)
+
     
-def fileupload(server):
+def fileupload():
     url =(server + uploaduri)
     filename = ("test.txt")
     files = {'file': open(filename)}
@@ -70,13 +70,18 @@ def fileupload(server):
         print("Attachment uploaded")
     else:
         print(connection.text)
-fileupload(server)
 
-def close(server):
+
+def close():
     url = (server + "/icws/" + sessionID + "/connection")
     connection = requests.delete(url, headers = {"ININ-ICWS-CSRF-Token" : token}, cookies = cookie)
     if connection.status_code >= 200 and connection.status_code <= 299:
         print("session closed")
     else:
         print(connection.text)
-close(server)
+
+ connection()       
+ createEmail()  
+ getuploadUri()   
+ fileupload()   
+ close()
